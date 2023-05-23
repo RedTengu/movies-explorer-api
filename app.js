@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const { errors } = require('celebrate');
 
-// const { requestLogger, errorLogger } = require('./middlewares/logger');
+const authRouter = require('./routes/auth');
+const router = require('./routes');
+
+const NotFound = require('./errors/notFoundError');
 
 // Подключение Express
 const app = express();
@@ -19,11 +22,18 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Подключение логгера
-// app.use(requestLogger);
-
 // Подключение CORS
 app.use(cors());
+
+// Подключение роутов авторизации
+app.use(authRouter);
+// Подключение остальных роутов
+app.use(router);
+
+// Обработка 404
+app.use(() => {
+  throw (new NotFound('Маршрут не существует'));
+});
 
 // Запуск сервера
 app.listen(PORT, () => {
