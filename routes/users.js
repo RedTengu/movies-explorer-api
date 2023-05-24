@@ -1,7 +1,9 @@
 const usersRouter = require('express').Router();
 const { celebrate } = require('celebrate');
 
-usersRouter.get('/users/me', () => {});
-usersRouter.patch('/users/me', () => {});
+const { getCurrentUser } = require('../controllers/users');
+
+usersRouter.get('/me', getCurrentUser);
+usersRouter.patch('/me', () => {});
 
 module.exports = usersRouter;

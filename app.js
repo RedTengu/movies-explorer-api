@@ -7,7 +7,6 @@ const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorController = require('./middlewares/errorController');
 const { NotFound } = require('./errors/index');
-const authRouter = require('./routes/auth');
 const router = require('./routes');
 
 // Подключение Express
@@ -28,9 +27,7 @@ app.use(requestLogger);
 // Запуск CORS
 app.use(cors());
 
-// Запуск роутов авторизации
-app.use(authRouter);
-// Запуск остальных роутов
+// Запуск роутера
 app.use(router);
 
 // Обработка 404
