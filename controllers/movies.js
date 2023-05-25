@@ -15,7 +15,6 @@ const getMyMovies = (req, res, next) => {
 // Создать фильм
 const createMovie = (req, res, next) => {
   const { _id } = req.user;
-  console.log(req.body)
   Movie.create({ ...req.body, owner: _id })
     .then((newMovie) => {
       res.send(newMovie);
