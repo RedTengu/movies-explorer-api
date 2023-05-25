@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const User = require('../models/user');
-const { BadRequest, Conflict, Unauthorized } = require('../errors/index');
+const { BadRequest, Conflict, Unauthorized, NotFound } = require('../errors/index');
 
 // Проверка наличия юзера
 const userCheck = (user, res) => {
