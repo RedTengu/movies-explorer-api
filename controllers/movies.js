@@ -46,4 +46,4 @@ module.exports = {
   getMyMovies,
   createMovie,
   deleteMovie,
-}
+};

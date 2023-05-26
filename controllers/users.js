@@ -3,7 +3,9 @@ const jwt = require('jsonwebtoken');
 
 const config = require('../utils/config');
 const User = require('../models/user');
-const { BadRequest, Conflict, Unauthorized, NotFound } = require('../errors/index');
+const {
+  BadRequest, Conflict, Unauthorized, NotFound,
+} = require('../errors/index');
 
 // Проверка наличия юзера
 const userCheck = (user, res) => {
@@ -16,13 +18,13 @@ const userCheck = (user, res) => {
 // Создать пользователя
 const createUser = (req, res, next) => {
   const {
-    email, password, name
+    email, password, name,
   } = req.body;
 
   bcrypt.hash(password, 10)
     .then((hash) => {
       User.create({
-        email, password: hash, name
+        email, password: hash, name,
       })
         .then((newUser) => res.send({
           email: newUser.email,
@@ -76,7 +78,7 @@ const editUser = (req, res, next) => {
   const { email, name } = req.body;
   const ownerId = req.user._id;
 
-  User.findByIdAndUpdate(ownerId, { email, name}, { new: true, runValidators: true })
+  User.findByIdAndUpdate(ownerId, { email, name }, { new: true, runValidators: true })
     .then((user) => userCheck(user, res))
     .catch((err) => {
       if (err.code === 11000) {
@@ -94,4 +96,4 @@ module.exports = {
   login,
   getCurrentUser,
   editUser,
-}
+};
