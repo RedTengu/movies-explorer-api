@@ -3,17 +3,19 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { errors } = require('celebrate');
+const helmet = require('helmet');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const limiter = require('./middlewares/limiter');
 const errorController = require('./middlewares/errorController');
 const { NotFound } = require('./errors/index');
 const router = require('./routes');
 
-// Подключение Express
-const app = express();
-
 // Подключение порта
 const { PORT = 3000 } = process.env;
+
+// Подключение Express
+const app = express();
 
 // Подключение к БД
 mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
@@ -22,11 +24,17 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Запуск Helmet
+app.use(helmet());
+
 // Логгер запросов
 app.use(requestLogger);
 
 // Запуск CORS
 app.use(cors());
+
+// Запуск rate-limit
+app.use(limiter);
 
 // Запуск роутера
 app.use(router);
