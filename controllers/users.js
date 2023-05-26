@@ -1,10 +1,7 @@
-require('dotenv').config();
-
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { NODE_ENV, JWT_SECRET } = process.env;
-
+const config = require('../utils/config');
 const User = require('../models/user');
 const { BadRequest, Conflict, Unauthorized, NotFound } = require('../errors/index');
 
@@ -59,7 +56,7 @@ const login = (req, res, next) => {
             throw new Unauthorized('Ошибка! Неверный email или пароль.');
           }
 
-          const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret-key', { expiresIn: '7d' });
+          const token = jwt.sign({ _id: user._id }, config.jwtSecret, { expiresIn: '7d' });
 
           return res.send({ token });
         });

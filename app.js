@@ -5,6 +5,7 @@ const cors = require('cors');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
 
+const config = require('./utils/config');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const limiter = require('./middlewares/limiter');
 const errorController = require('./middlewares/errorController');
@@ -18,7 +19,7 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 // Подключение к БД
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
+mongoose.connect(config.bitfilmsdb);
 
 // Запуск парсера
 app.use(bodyParser.json());
